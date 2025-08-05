@@ -1,2 +1,7 @@
 User-agent: *
-Disallow: /
+Allow: /
+Sitemap: https://www.gravityhomes.in/sitemap.xml
+
+Disallow: /*.pdf$
+Disallow: /*.mp4$
+Disallow: /*.mov$

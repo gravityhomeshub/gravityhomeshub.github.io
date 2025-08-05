@@ -2,27 +2,8 @@
 # 🔁 Force www version of gravityhomes.in
 # ------------------------------------------------------------------
 RewriteEngine On
-
-# Block Known SEO Scrapers, AI Crawlers & Malicious Bots
-RewriteCond %{HTTP_USER_AGENT} "AhrefsBot|PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|Googlebot-Image|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|LinkedInBot|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|Googlebot-News|TurnitinBot" [NC]
-RewriteRule .* - [F,L]
-
-# Block Patterns Matching Generic Bots / Crawlers / AI Scrapers
-RewriteCond %{HTTP_USER_AGENT} "bot|crawl|spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" [NC]
-RewriteRule .* - [F,L]
-
-
-
-# Redirect HTTP to HTTPS
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Redirect non-www to www
-RewriteCond %{HTTP_HOST} ^gravityhomes\.in [NC]
-RewriteRule ^ https://www.gravityhomes.in%{REQUEST_URI} [L,R=301]
-
-
-AddDefaultCharset UTF-8
+RewriteCond %{HTTP_HOST} ^gravityhomes\.in$ [NC]
+RewriteRule ^(.*)$ https://www.gravityhomes.in/$1 [R=301,L]
 
 # ------------------------------------------------------------------
 # ⚙️ General Server Options
@@ -31,13 +12,13 @@ Options -MultiViews -Indexes
 DirectoryIndex index.html
 
 # ------------------------------------------------------------------
-# Prevent rewriting of error page
+# 🧱 Prevent rewriting of error page
 # ------------------------------------------------------------------
 RewriteCond %{REQUEST_URI} ^/404\.html$ [NC]
 RewriteRule .* - [L]
 
 # ------------------------------------------------------------------
-# Legacy URL Redirects
+# 🔀 Legacy URL Redirects
 # ------------------------------------------------------------------
 RewriteRule ^project/gravity-smera/?$ /project/gravity-smera-gardens [R=301,L]
 RewriteRule ^project/gravity-thanisandra/?$ /project/gravity-sky-forest [R=301,L]
@@ -45,13 +26,13 @@ RewriteRule ^project/gravity-rajanukunte/?$ /project/gravity-lake-estates [R=301
 RewriteRule ^project/gravity-rajankunte/?$ /project/gravity-lake-estates [R=301,L]
 
 # ------------------------------------------------------------------
-# Handle deep folder routing
+# 🧩 Handle deep folder routing
 # ------------------------------------------------------------------
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^(.+[^/])$ /$1/ [R=301,L]
 
 # ------------------------------------------------------------------
-# Fallback for missing pages → 404
+# 🛠 Fallback for missing pages → 404
 # ------------------------------------------------------------------
 RewriteCond %{REQUEST_URI} !^/404\.html$
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -59,12 +40,12 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ /404.html [R=302,L]
 
 # ------------------------------------------------------------------
-# Custom 404 error page (commented while rewrite handles it)
+# ❗ Custom 404 error page (commented while rewrite handles it)
 # ------------------------------------------------------------------
 # ErrorDocument 404 /404.html
 
 # ------------------------------------------------------------------
-# Asset Caching Rules
+# 🚀 Asset Caching Rules
 # ------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
@@ -112,40 +93,7 @@ RewriteRule ^.*$ /404.html [R=302,L]
 </FilesMatch>
 
 # ------------------------------------------------------------------
-# Hotlink Protection
+# 🔐 Hotlink Protection
 # ------------------------------------------------------------------
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?gravityhomes\.in/ [NC]
 RewriteRule .*\.(jpg|jpeg|png|gif|bmp|pdf)$ - [F,NC]
-<Files 403.shtml>
-order allow,deny
-allow from all
-</Files>
-
-# Whitelist Legitimate Crawlers and Previews
-SetEnvIfNoCase User-Agent "Googlebot" good_bot
-SetEnvIfNoCase User-Agent "Bingbot" good_bot
-SetEnvIfNoCase User-Agent "LinkedInBot" good_bot
-SetEnvIfNoCase User-Agent "Pinterest" good_bot
-SetEnvIfNoCase User-Agent "Twitterbot" good_bot
-SetEnvIfNoCase User-Agent "facebookexternalhit" good_bot
-SetEnvIfNoCase User-Agent "WhatsApp" good_bot
-
-# Block Known SEO Scrapers, AI Crawlers & Malicious Bots
-SetEnvIfNoCase User-Agent "AhrefsBot|PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|Googlebot-Image|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|Googlebot-News|TurnitinBot" bad_bot
-
-# Block Patterns Matching Generic Bots / Crawlers / AI Scrapers
-SetEnvIfNoCase User-Agent "bot|crawl|spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" bad_bot
-
-# 🛡️ Enforcement Logic: Block if NOT Whitelisted
-Order Allow,Deny
-Allow from all
-Deny from env=bad_bot
-Allow from env=good_bot
-
-
-
-deny from 206.126.100.68
-deny from 106.51.65.236
-deny from 16.62.89.3
-deny from 54.234.52.71
-deny from 54.74.207.13

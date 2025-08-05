@@ -382,6 +382,14 @@ nav.fixed-top.nav-fixed {
   height: 1px;
   overflow: hidden;
 }
+.topic-content {
+  position: absolute;
+  left: -99999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 .page-heading h1 {
   font-size: 1.6rem;
@@ -390,13 +398,21 @@ nav.fixed-top.nav-fixed {
   line-height: 1.3;
   font-family: 'Playfair Display', serif;
 }
+.topic-content h2, .topic-content h3, .topic-content h4, .topic-content h5, .topic-content h6 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2C3E50;
+  line-height: 1.3;
+  font-family: 'Playfair Display', serif;
+}
 
-.page-heading p {
+.page-heading p, .topic-content p, .topic-content li {
   font-size: 1.1rem;
   color: #5D6D7E;
   line-height: 1.6;
   font-family: 'Inter', sans-serif;
 }
+
 @media (max-width: 768px) {
   .page-heading h1,
   .page-heading p {
@@ -474,7 +490,7 @@ nav.fixed-top.nav-fixed {
     position: relative;
     margin-top: -12rem;
 }
-.about-widget-content h6 {
+.about-widget-content h3 {
     font-size: 28px;
     font-weight: 400;
     line-height: 35px;
@@ -482,7 +498,7 @@ nav.fixed-top.nav-fixed {
     letter-spacing: 0.7px;
     color: #121212;
 }
-.about-widget-content h6 > span {
+.about-widget-content h3 > span {
     font-size: 40px;
     font-weight: 400;
     line-height: 35px;
@@ -532,7 +548,7 @@ nav.fixed-top.nav-fixed {
     letter-spacing: 0.7px;
     color: #121212;
 }
-.gravity-head-center h6 > span,
+.gravity-head-center h3 > span,
 .gravity-head-center h1 > span {
     font-size: 40px;
     color: #17574b;
@@ -541,7 +557,7 @@ nav.fixed-top.nav-fixed {
     letter-spacing: 6px;
     text-transform: uppercase;
 }
-.gravity-head-center h6 > span.contact_us_ {
+.gravity-head-center h3 > span.contact_us_ {
     font-size: 28px;
     font-weight: 400;
     line-height: 125%;
