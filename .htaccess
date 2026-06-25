@@ -4,11 +4,11 @@
 RewriteEngine On
 
 # Block Known SEO Scrapers, AI Crawlers & Malicious Bots
-RewriteCond %{HTTP_USER_AGENT} "AhrefsBot|PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|Googlebot-Image|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|LinkedInBot|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|Googlebot-News|TurnitinBot" [NC]
+RewriteCond %{HTTP_USER_AGENT} "PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|TurnitinBot" [NC]
 RewriteRule .* - [F,L]
 
 # Block Patterns Matching Generic Bots / Crawlers / AI Scrapers
-RewriteCond %{HTTP_USER_AGENT} "bot|crawl|spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" [NC]
+RewriteCond %{HTTP_USER_AGENT} "spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" [NC]
 RewriteRule .* - [F,L]
 
 
@@ -63,6 +63,7 @@ RewriteRule ^.*$ /404.html [R=302,L]
 # ------------------------------------------------------------------
 # ErrorDocument 404 /404.html
 
+
 # ------------------------------------------------------------------
 # Asset Caching Rules
 # ------------------------------------------------------------------
@@ -114,12 +115,16 @@ RewriteRule ^.*$ /404.html [R=302,L]
 # ------------------------------------------------------------------
 # Hotlink Protection
 # ------------------------------------------------------------------
-RewriteCond %{HTTP_REFERER} !^https?://(www\.)?gravityhomes\.in/ [NC]
-RewriteRule .*\.(jpg|jpeg|png|gif|bmp|pdf)$ - [F,NC]
-<Files 403.shtml>
-order allow,deny
-allow from all
-</Files>
+# 🔒 Block direct access to image files unless from gravityhomes.in
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Block direct access to images unless Referer is gravityhomes.in
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?gravityhomes\.in/ [NC]
+  RewriteCond %{REQUEST_URI} \.(jpg|jpeg|png|webp|gif|bmp)$ [NC]
+  RewriteRule .* - [F]
+</IfModule>
+
 
 # Whitelist Legitimate Crawlers and Previews
 SetEnvIfNoCase User-Agent "Googlebot" good_bot
@@ -131,10 +136,10 @@ SetEnvIfNoCase User-Agent "facebookexternalhit" good_bot
 SetEnvIfNoCase User-Agent "WhatsApp" good_bot
 
 # Block Known SEO Scrapers, AI Crawlers & Malicious Bots
-SetEnvIfNoCase User-Agent "AhrefsBot|PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|Googlebot-Image|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|Googlebot-News|TurnitinBot" bad_bot
+SetEnvIfNoCase User-Agent "AhrefsBot|PetalBot|Bytespider|MJ12bot|SemrushBot|BLEXBot|YandexBot|Claude|PerplexityBot|GPTBot|OpenAI|Anthropic|crawl|Go-http-client|nbot|Applebot|YisouSpider|Seobility|aiHitBot|Screaming Frog SEO Spider|360Spider|zoominfobot|Dalvik|scanner|scrapy|YandexImages|archive.org_bot|MojeekBot|CCBot|SemrushBot-SI|Apache-HttpClient|netEstate NE Crawler|SurdotlyBot|yak-linkfluence|LWP::Simple|Baiduspider|DuckDuckBot|DotBot|libwww-perl|Offline Explorer|Nautic Expo|Python-urllib|trendiction|TurnitinBot" bad_bot
 
 # Block Patterns Matching Generic Bots / Crawlers / AI Scrapers
-SetEnvIfNoCase User-Agent "bot|crawl|spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" bad_bot
+SetEnvIfNoCase User-Agent "spider|scraper|checker|validator|downloader|harvest|leech|agent|java|perl|python|node|siphon|fetch|grabber|seo|ai|link|sitemap|blog|research|feed|survey" bad_bot
 
 # 🛡️ Enforcement Logic: Block if NOT Whitelisted
 Order Allow,Deny
